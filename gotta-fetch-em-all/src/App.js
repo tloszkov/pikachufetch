@@ -13,6 +13,8 @@ function App() {
   const [pokemonSprite, setPokemonSprite] = useState(``);
   const [isLocationSelected, setIsLocationSelected] = useState(false);
   const [isAreaSelected, setIsAreaSelected] = useState(false);
+  const [emptyPokemon, setEmptyPokemon] = useState(false);
+
 
   useEffect(() => {
 
@@ -53,10 +55,14 @@ function App() {
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        const fetchedPokemonName = data.pokemon_encounters[getRandomPokemon(data.pokemon_encounters.length)].pokemon.name;
-        fetchingPokemonSprite(data.pokemon_encounters[getRandomPokemon(data.pokemon_encounters.length)].pokemon.url);
-        setPokemon(fetchedPokemonName);
-        console.log("fetchedPokemonName:", fetchedPokemonName);
+        if (data.pokemon_encounters.length!==0){
+          const fetchedPokemonName = data.pokemon_encounters[getRandomPokemon(data.pokemon_encounters.length)].pokemon.name;
+          fetchingPokemonSprite(data.pokemon_encounters[getRandomPokemon(data.pokemon_encounters.length)].pokemon.url);
+          setPokemon(fetchedPokemonName);
+          console.log("fetchedPokemonName:", fetchedPokemonName);
+        } else {
+          setEmptyPokemon(true);
+        }
       })
       .catch(error => console.log("ERROR"))
   }
@@ -76,6 +82,7 @@ function App() {
     console.log("Pokemon list:", pokemon);
     setIsAreaSelected(true);
   }
+  
 
   function getRandomPokemon(number) {
     return Math.floor(Math.random() * number);
@@ -89,37 +96,55 @@ function App() {
     <div className="App">
       {!isLocationSelected ? (
         locations.map((item, index) => {
-          return <Locations
-            id={index}
-            key={index}
-            onClick={moveToLocation}
-            name={item.name} />
+          return (
+            <Locations
+              id={index}
+              key={index}
+              onClick={moveToLocation}
+              name={item.name}
+            />
+          );
         })
-      ) :
+      ) : (
         <>
-          {!isAreaSelected ? (<div>
-            {area.map((item, index) => {
-              console.log(item)
-              return <Area
-                id={index}
-                key={index}
-                onClick={moveToPokemon}
-                name={item.name}
-              />
-            })}
-            <button onClick={backToLocations}>Back</button>
-          </div>) :
-            (<ListOfPokemons
-              id={pokemon}
-              key={pokemon}
-              name={pokemon}
-              url={pokemonSprite}
-              />
-            )}
+          {!isAreaSelected ? (
+            <div>
+              {area.map((item, index) => {
+                console.log(item);
+                return (
+                  <Area
+                    id={index}
+                    key={index}
+                    onClick={moveToPokemon}
+                    name={item.name}
+                  />
+                );
+              })}
+              <button onClick={backToLocations}>Back</button>
+            </div>
+          ) : (
+            !emptyPokemon ? (
+              <div>
+                <ListOfPokemons
+                  id={pokemon}
+                  key={pokemon}
+                  name={pokemon}
+                  url={pokemonSprite}
+                />
+              </div>
+            ) : (
+            <>
+              <h2>This location doesn't seem to have any pokémon</h2>
+              <button onClick={backToLocations}>Back to Locations</button>
+              </>
+            )
+          )}
         </>
-      }
+      )}
     </div>
   );
 }
+
+        
 
 export default App;
