@@ -1,13 +1,10 @@
-function ListOfPokemons(props) {
-    const name = props.name
-    const link = props.link
-    const id = props.id
+function ListOfPokemons({ name, url, id }) {
 
-   return  <div id={id} className="Pokemon">
-    <h2>{name}</h2>
-    <img src={link} alt={name}/>
-   </div>
-}
+    return (<div id={id} className="Pokemon">
+        <h2>{name}</h2>
+        <img src={url} alt={name} />
+    </div>);
+};
 
 export default ListOfPokemons;
 
