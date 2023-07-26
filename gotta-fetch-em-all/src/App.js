@@ -13,6 +13,7 @@ function App() {
   const [area, setArea] = useState([]);
   const [isAreaSelected, setIsAreaSelected] = useState(false);
   const [isLocationSelected, setIsLocationSelected] = useState(false);
+  const [isAreaSelectorPage, setIsAreaSelectorPage] = useState(true);
 
   //State in case an area does not cotani a pokemon
   const [emptyPokemon, setEmptyPokemon] = useState(false);
@@ -151,6 +152,7 @@ function App() {
     setIsLocationSelected(true);
     setIsAreaSelected(false);
     setIsOwnPokemonSelected(false);
+    setIsAreaSelectorPage(false);
   };
 
   // Function for POKEMON selection
@@ -168,6 +170,7 @@ function App() {
   //BACK button function
   function backToLocations() {
     setIsLocationSelected(false);
+    setIsAreaSelectorPage(true);
   }
 
   //Battle function after selecting Own pokemon
@@ -235,7 +238,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className={`App ${isAreaSelectorPage ? "area-selector-page" : ""}`}>
       {!isLocationSelected ? (
         locations.map((item, index) => {
           return (

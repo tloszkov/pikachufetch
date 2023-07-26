@@ -19,3 +19,16 @@ img {
   height: 300px;
   image-rendering: pixelated;
 }
+
+.area-selector-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url("../public/area_selector_background.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.area-button-container {
+  margin-bottom: 10px;
+}
